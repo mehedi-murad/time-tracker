@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import Aos from "aos"
 import "aos/dist/aos.css"
+import Lottie from 'lottie-react';
+import animateImage from '../../../../public/animate.json'
 
 
 const CreateTask = () => {
@@ -18,8 +20,7 @@ const CreateTask = () => {
         const taskInfo={
             title:data.title,
             details:data.details,
-            deadline:data.deadline,
-            priority:data.priority
+            notes:data.note
 
         }
 
@@ -48,8 +49,8 @@ const CreateTask = () => {
         Aos.init({duration:2000})
     },[])
     return (
-        <div className='flex justify-around items-center'>
-            <div>
+        <div className='flex justify-around items-center p-20'>
+            <div className='flex-1'>
             <form data-aos="fade-up" onSubmit={handleSubmit(onSubmit)} className="p-4">
                     <div className="form-control">
                         <label className="label">
@@ -85,48 +86,29 @@ const CreateTask = () => {
                         )}
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                        <span className="label-text text-white">Deadlines</span>
-                        </label>
-                        <input
-                        type="date"
-                        placeholder="Enter Deadline"
-                        name="deadline"
-                        {...register("deadline", { required: true })}
-                        className="input input-bordered"
-                        />
-                        {errors.deadline && (
-                        <span className="text-red-500 mt-2">deadline is required</span>
-                        )}
-                    </div>
-
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text text-white">Set the Priority</span>
+                  <span className="label-text text-white">Notes</span>
                 </label>
-                <select {...register("priority")} className="select select-bordered w-full" name="priority">
-                        <option  disabled selected>Set the priority</option>
-                        <option>Low</option>
-                        <option>Moderate</option>
-                        <option>High</option>
-                </select>
-                {errors.priority && (
-                    <span className="text-red-500 mt-2">Priority checking is required</span>
-                    )}
+                <textarea 
+                            placeholder="Notes (if any)" 
+                            className="textarea textarea-bordered textarea-lg w-full"
+                            name="note"
+                            {...register("note", { required: true })}
+                            ></textarea>
               </div>
 
               <div className="form-control">
                 <input className="bg-[#F92659] px-4 py-2 text-white font-semibold rounded-lg mt-10 btn-block"
-                        type="submit" value="Task Submit"
+                        type="submit" value="Create Task"
                             />
               </div>
               
             </form>
             </div>
-            <div>
-                
+            <div data-aos="fade-left" className='flex-1'>
+                <Lottie animationData={animateImage}></Lottie>
             </div>
         </div>
     );

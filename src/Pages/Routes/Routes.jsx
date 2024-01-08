@@ -6,6 +6,8 @@ import SignUp from "../Authentication/SignUp/SignUp";
 import Dashboard from "../Dashboard/Dashboard";
 import UserProfile from "../Dashboard/UserProfile/UserProfile";
 import CreateTask from "../Dashboard/CreateTask/CreateTask";
+import AllTasks from "../Dashboard/AllTasks/AllTasks";
+import UpdateTask from "../Dashboard/UpdateTask/UpdateTask";
 
 const Routes = createBrowserRouter([
     {
@@ -38,15 +40,15 @@ const Routes = createBrowserRouter([
                 path: "createTask",
                 element:<CreateTask></CreateTask>
             },
-            // {
-            //     path: "toDo",
-            //     element:<ToDo></ToDo>
-            // },
-            // {
-            //     path: "updateToDo/:id",
-            //     element:<UpdateToDo></UpdateToDo>,
-            //     loader: ({params}) => fetch(`https://task-management-server-lovat.vercel.app/tasks/${params.id}`)
-            // }
+            {
+                path: "allTask",
+                element:<AllTasks></AllTasks>
+            },
+            {
+                path: "updateTask/:id",
+                element:<UpdateTask></UpdateTask>,
+                loader: ({params}) => fetch(`http://localhost:5000/tasks/${params.id}`)
+            }
         ]
     }
 ])

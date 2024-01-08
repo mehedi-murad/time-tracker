@@ -23,6 +23,11 @@ const Dashboard = () => {
                     <FaTasks></FaTasks>Create Task
                 </NavLink>
             </li>
+            <li>
+                <NavLink to="/dashboard/allTask">
+                    <FaTasks></FaTasks>All Tasks
+                </NavLink>
+            </li>
             
             
         </ul>
@@ -35,7 +40,7 @@ const Dashboard = () => {
             </li>
         </ul>
       </div>
-      <div className="flex-1 bg-base-200 taskBg">
+      <div className="flex-1 bg-gradient-to-r from-sky-500 to-indigo-500">
         {/* {noWelcomeNote || <WelcomeNote></WelcomeNote>} */}
         <Outlet></Outlet>
       </div>

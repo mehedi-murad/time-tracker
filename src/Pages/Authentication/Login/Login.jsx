@@ -1,12 +1,68 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import loginImg from '../../../assets/login/login.png'
 import './Login.css'
 import { FaGoogle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Provider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Login = () => {
-    const handleLogin = e =>{
+    const { signInUser, googleSignIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    const from = location.state?.from?.pathname || "/";
 
+    const handleGoogleSignin = () =>{
+        googleSignIn()
+        .then(result => {
+            console.log(result.user)
+            const userInfo = {
+              name: result.user?.displayName,
+              email: result.user?.email
+            }
+            fetch('http://localhost:5000/users', {
+                method: 'POST',
+                headers: {
+                    'content-type':'application/json'
+                },
+                body: JSON.stringify(userInfo)
+            })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data)
+              navigate('/')
+            })
+  
+        })
+    }
+    const handleLogin = e =>{
+        e.preventDefault();
+
+        const form = e.target;
+
+        const email = form.email.value;
+        const password = form.password.value;
+        // console.log(email, password);
+
+        signInUser(email, password)
+        .then((result) => {
+            const user = result.user;
+            console.log(user);
+            navigate(location?.state ? location?.state : "/");
+            Swal.fire({
+            title: "Logged in!",
+            text: "Successfully logged in.",
+            });
+            navigate(from, { replace: true });
+        })
+        .catch((error) => {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You have put wrong credentials!",
+            });
+        });
     }
     return (
         <div className='loginBg min-h-screen flex justify-evenly items-center gap-6'>
@@ -30,7 +86,7 @@ const Login = () => {
                     </Link>
                 </p>
                 <div className='divider divider-secondary text-white'>OR</div>
-                <div className='btn btn-outline text-white flex'>
+                <div onClick={handleGoogleSignin} className='btn btn-outline text-white flex'>
                   <FaGoogle></FaGoogle> <h2>Signin by Google</h2>
                 </div>
             </div>
